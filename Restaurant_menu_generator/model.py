@@ -1,11 +1,17 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain , SequentialChain
+import streamlit as st
 import os
-from secret_key import API_KEY  # Make sure this exists
+
 
 # Set OpenRouter endpoint
-os.environ["OPENAI_API_KEY"] = API_KEY
+try:
+    os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    from secret_key import API_KEY 
+    os.environ["OPENAI_API_KEY"] = API_KEY
+
 os.environ["OPENAI_API_BASE"] = "https://openrouter.ai/api/v1"
 
 def generate_restaurant_data(cusine: str, tone: str):
